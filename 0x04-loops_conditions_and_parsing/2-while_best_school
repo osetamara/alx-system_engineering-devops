@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Displays "Best School" 10 times using a while loop.
+# Initialize a counter variable called 'count' to 0.
+count=0
+# Start a while loop that will continue as long as 'count' is less than 10.
+while [ $count -lt 10 ]
+do
+  echo "Best School"
+  (( count++ ))
+done
