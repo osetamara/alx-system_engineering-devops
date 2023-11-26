@@ -1,7 +1,7 @@
 # kill process killmenow
 
-exec { 'pkillmenow':
-  command  => '/usr/bin/kill killmenow',
-  provider => 'shell',
-  returns  => [0, 1],
+exec { 'kill_process':
+  command     => '/usr/bin/pkill -f "killmenow"',
+  refreshonly => true,
+  onlyif      => '/usr/bin/pgrep -f "killmenow"',
 }
