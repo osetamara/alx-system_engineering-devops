@@ -1,26 +1,13 @@
 #!/usr/bin/env bash
 
-# Check if the correct number of parameters are provided
-if [ "$#" -lt 4 ]; then
-    echo "Usage: $0 PATH_TO_FILE IP USERNAME PATH_TO_SSH_KEY"
-    exit 1
-fi
+# uploads a file to a server
 
-# Extract parameters
-FILE_PATH="$1"
-SERVER_IP="$2"
-USERNAME="$3"
-SSH_KEY="$4"
+msg="Usage: 0-transfer_file PATH_TO_FILE IP USERNAME PATH_TO_SSH_KEY"
 
-# Construct the SCP command with required options
-SCP_COMMAND="scp -o StrictHostKeyChecking=no -i $SSH_KEY $FILE_PATH $USERNAME@$SERVER_IP:~/"
-
-# Execute the SCP command
-$SCP_COMMAND
-
-# Check the exit status of the SCP command
-if [ "$?" -eq 0 ]; then
-    echo "File successfully transferred to $USERNAME@$SERVER_IP:~/"
+if [ "$4" ]; then
+   scp -i "$4" -o StrictHostKeyChecking=no "$1" "$3@$2:~"
+elif [ "$3" ]; then
+     scp -o StrictHostKeyChecking=no "$1" "$3@$2~"
 else
-    echo "Error: File transfer failed."
+	echo "$msg";
 fi
