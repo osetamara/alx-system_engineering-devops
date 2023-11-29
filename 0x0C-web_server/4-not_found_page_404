@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+# Check if the script is run with root privileges
+if [ "$EUID" -ne 0 ]; then
+    echo "Please run as root (sudo) or with appropriate privileges."
+    exit 1
+fi
+
+# Update the package list
+apt-get update
+
+# Install Nginx
+apt-get install -y nginx
+
+# Start Nginx (it might be started automatically after installation)
+service nginx start
+
+# Configure Nginx to listen on port 80
+bash -c 'echo "server {
+    listen 80;
+    server_name localhost;
+
+    location / {
+        echo \"Hello World!\";
+        root /usr/share/nginx/html;
+        index index.html;
+    }
+
+    location /redirect_me {
+        return 301 http://example.com/new_page;
+    }
+
+    error_page 404 /404.html;
+    location = /404.html {
+        root /usr/share/nginx/html;
+        internal;
+    }
+}" > /etc/nginx/sites-available/default'
+
+# Create the custom 404 page with the required content
+echo "C
+

@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+# Check if the correct number of parameters are provided
+if [ "$#" -lt 4 ]; then
+    echo "Usage: $0 PATH_TO_FILE IP USERNAME PATH_TO_SSH_KEY"
+    exit 1
+fi
+
+# Extract parameters
+FILE_PATH="$1"
+SERVER_IP="$2"
+USERNAME="$3"
+SSH_KEY="$4"
+
+# Construct the SCP command with required options
+SCP_COMMAND="scp -o StrictHostKeyChecking=no -i $SSH_KEY $FILE_PATH $USERNAME@$SERVER_IP:~/"
+
+# Execute the SCP command
+$SCP_COMMAND
+
+# Check the exit status of the SCP command
+if [ "$?" -eq 0 ]; then
+    echo "File successfully transferred to $USERNAME@$SERVER_IP:~/"
+else
+    echo "Error: File transfer failed."
+fi
