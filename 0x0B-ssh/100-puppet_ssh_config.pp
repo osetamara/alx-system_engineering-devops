@@ -4,9 +4,10 @@
 
 file { 'etc/ssh/ssh_config':
         ensure => present,
-content =>"hello world
+content =>"
           #ssh client configuration
           host*
           IdentityFile ~/.ssh/school
           passwordAuthentication no
+	  ",
 }
